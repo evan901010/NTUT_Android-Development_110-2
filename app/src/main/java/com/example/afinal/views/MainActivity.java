@@ -1,12 +1,23 @@
-package com.example.afinal;
+package com.example.afinal.views;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationManagerCompat;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.afinal.R;
+
+import java.util.Set;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -17,6 +28,22 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setIcon(R.drawable.logo);
 
         setContentView(R.layout.activity_main);
+
+        if(!isPurview(this)){ // 檢查權限是否開啟，未開啟則開啟對話框
+            // 對話框按鈕事件
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle(R.string.app_name)
+                    .setMessage("請啟用通知欄擷取權限")
+                    .setIcon(R.mipmap.ic_launcher_round)
+                    .setOnCancelListener(dialog -> { // 對話框取消事件
+                        finish();
+                    })
+                    .setPositiveButton("前往", (dialog, which) -> {
+                        // 跳轉自開啟權限畫面，權限開啟後通知欄擷取服務將自動啟動。
+                        startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
+                    }
+                    ).show();
+        }
     }
 
     @Override
@@ -53,5 +80,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean isPurview(Context context) {
+        Set<String> packageNames = NotificationManagerCompat.getEnabledListenerPackages(context);
+        return packageNames.contains(context.getPackageName());
     }
 }
