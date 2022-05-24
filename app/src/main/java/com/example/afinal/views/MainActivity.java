@@ -17,7 +17,6 @@ import java.util.Set;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
     @Override
