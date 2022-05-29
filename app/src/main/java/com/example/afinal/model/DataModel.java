@@ -14,6 +14,9 @@ import android.service.notification.StatusBarNotification;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.afinal.MainApplication;
+import com.example.afinal.views.MainActivity;
+
 import java.util.ArrayList;
 
 public class DataModel extends SQLiteOpenHelper {
@@ -26,6 +29,7 @@ public class DataModel extends SQLiteOpenHelper {
     }
 
     private static final int DataBaseVersion = 1;
+
 
     public void getNewNotification(@NonNull StatusBarNotification sbn) {
         Bundle extras = sbn.getNotification().extras;
@@ -58,11 +62,13 @@ public class DataModel extends SQLiteOpenHelper {
 
         while (c.moveToPrevious()){
             ArrayList<String> notification = new ArrayList<>();
-            for(int column = 0; column < 3; column++){
+            for(int column = 1; column < 4; column++){
                 notification.add(c.getString(column));
             }
             notificationList.add(notification);
         }
+        MainActivity mainActivityContext = (MainActivity) MainApplication.getMainActivityContext();
+        mainActivityContext.setNotificationList(notificationList);
     }
 
     public DataModel(@Nullable Context context) {

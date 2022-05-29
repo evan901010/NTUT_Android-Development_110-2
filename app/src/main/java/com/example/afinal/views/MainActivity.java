@@ -3,6 +3,10 @@ package com.example.afinal.views;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,17 +15,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.afinal.MainApplication;
 import com.example.afinal.R;
+import com.example.afinal.model.DataModel;
 
+import java.util.ArrayList;
 import java.util.Set;
 
-import dagger.hilt.android.AndroidEntryPoint;
-
 public class MainActivity extends AppCompatActivity {
+    private RecyclerView notificationView;
+    private NotificationAdapter notificationAdapter;
+    private ArrayList<ArrayList<String>> notificationList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        MainApplication.setMainActivityContext(this);
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.logo);
@@ -43,6 +53,25 @@ public class MainActivity extends AppCompatActivity {
                     }
                     ).show();
         }
+
+
+
+
+        notificationView = (RecyclerView) findViewById(R.id.recyclerView);
+        notificationView.setLayoutManager(new LinearLayoutManager(this));
+        notificationView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+        DataModel dataModel = new DataModel(this);
+        dataModel.readData();
+    }
+
+    public void setNotificationList(ArrayList<ArrayList<String>> mNotificationList){
+        notificationList = mNotificationList;
+        notificationAdapter = new NotificationAdapter(this, notificationList);
+        notificationView.setAdapter(notificationAdapter);
+        ItemTouchHelper.Callback callback=new ItemTouchHelperCallback(notificationAdapter);
+        ItemTouchHelper itemTouchHelper=new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(notificationView);
     }
 
     @Override
