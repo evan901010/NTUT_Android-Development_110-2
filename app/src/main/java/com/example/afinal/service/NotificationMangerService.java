@@ -1,9 +1,11 @@
-package com.example.afinal.model;
+package com.example.afinal.service;
 
 import android.content.Intent;
 import android.os.IBinder;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
+
+import com.example.afinal.database.DataModel;
 
 
 public class NotificationMangerService extends NotificationListenerService {

@@ -10,13 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.afinal.R;
+import com.example.afinal.model.NotificationInfo;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class NotificationAdapter extends
         RecyclerView.Adapter<NotificationAdapter.WordViewHolder> implements ItemTouchHelperAdapter{
-    private ArrayList<ArrayList<String>> notificationList;
+    private ArrayList<NotificationInfo> notificationList;
     private final LayoutInflater mInflater;
 
     @Override
@@ -44,7 +45,7 @@ public class NotificationAdapter extends
         }
     }
 
-    public NotificationAdapter(Context context, ArrayList<ArrayList<String>> notificationList) {
+    public NotificationAdapter(Context context, ArrayList<NotificationInfo> notificationList) {
         mInflater = LayoutInflater.from(context);
         this.notificationList = notificationList;
     }
@@ -59,8 +60,9 @@ public class NotificationAdapter extends
 
     @Override
     public void onBindViewHolder(@NonNull NotificationAdapter.WordViewHolder holder, int position) {
-        holder.titleView.setText(notificationList.get(position).get(1));
-        holder.textView.setText(notificationList.get(position).get(2));
+
+        holder.titleView.setText(notificationList.get(position).getTitle());
+        holder.textView.setText(notificationList.get(position).getText());
     }
 
     @Override

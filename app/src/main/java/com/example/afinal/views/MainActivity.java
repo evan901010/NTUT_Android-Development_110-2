@@ -17,7 +17,8 @@ import android.widget.Toast;
 
 import com.example.afinal.MainApplication;
 import com.example.afinal.R;
-import com.example.afinal.model.DataModel;
+import com.example.afinal.database.DataModel;
+import com.example.afinal.model.NotificationInfo;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -25,7 +26,8 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity {
     private RecyclerView notificationView;
     private NotificationAdapter notificationAdapter;
-    private ArrayList<ArrayList<String>> notificationList = new ArrayList<>();
+    private ArrayList<NotificationInfo> notificationList = new ArrayList<>();
+    private DataModel dataModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,17 +63,16 @@ public class MainActivity extends AppCompatActivity {
         notificationView.setLayoutManager(new LinearLayoutManager(this));
         notificationView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        DataModel dataModel = new DataModel(this);
+        dataModel = new DataModel(this);
         dataModel.readData();
     }
 
-    public void setNotificationList(ArrayList<ArrayList<String>> mNotificationList){
+    public void setNotificationList(ArrayList<NotificationInfo> mNotificationList){
         notificationList = mNotificationList;
+        notificationView.setAdapter(notificationAdapter);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(notificationView);
         notificationAdapter = new NotificationAdapter(this, notificationList);
         notificationView.setAdapter(notificationAdapter);
-        ItemTouchHelper.Callback callback=new ItemTouchHelperCallback(notificationAdapter);
-        ItemTouchHelper itemTouchHelper=new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(notificationView);
     }
 
     @Override
@@ -114,4 +115,23 @@ public class MainActivity extends AppCompatActivity {
         Set<String> packageNames = NotificationManagerCompat.getEnabledListenerPackages(context);
         return packageNames.contains(context.getPackageName());
     }
+
+    private void deleteNotification(NotificationInfo notificationInfo){
+        notificationList.remove(notificationInfo);
+        notificationAdapter.notifyDataSetChanged();
+
+        dataModel.deleteDate(notificationInfo.getId());
+    }
+
+    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            deleteNotification(notificationList.get(viewHolder.getAdapterPosition()));
+        }
+    };
 }

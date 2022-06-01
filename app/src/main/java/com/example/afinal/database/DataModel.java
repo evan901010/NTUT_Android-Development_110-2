@@ -1,4 +1,4 @@
-package com.example.afinal.model;
+package com.example.afinal.database;
 
 
 import android.annotation.SuppressLint;
@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 
 import com.example.afinal.MainApplication;
 import com.example.afinal.views.MainActivity;
+import com.example.afinal.model.NotificationInfo;
 
 import java.util.ArrayList;
 
@@ -58,17 +59,24 @@ public class DataModel extends SQLiteOpenHelper {
         @SuppressLint("Recycle") Cursor c = db.rawQuery("SELECT * FROM " + DataBaseTable,null);
         c.moveToLast();
 
-        ArrayList<ArrayList<String>> notificationList = new ArrayList<>();
+        ArrayList<NotificationInfo> notificationList = new ArrayList<>();
 
         while (c.moveToPrevious()){
-            ArrayList<String> notification = new ArrayList<>();
-            for(int column = 1; column < 4; column++){
-                notification.add(c.getString(column));
-            }
+            NotificationInfo notification = new NotificationInfo();
+            notification.setId(Integer.parseInt(c.getString(0)));
+            notification.setPackageName(c.getString(1));
+            notification.setTitle(c.getString(2));
+            notification.setText(c.getString(3));
             notificationList.add(notification);
         }
+
         MainActivity mainActivityContext = (MainActivity) MainApplication.getMainActivityContext();
         mainActivityContext.setNotificationList(notificationList);
+    }
+
+    public void deleteDate(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(DataBaseTable, "_id" + "=" + Integer.toString(id), null);
     }
 
     public DataModel(@Nullable Context context) {
