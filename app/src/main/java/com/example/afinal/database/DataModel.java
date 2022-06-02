@@ -61,14 +61,16 @@ public class DataModel extends SQLiteOpenHelper {
 
         ArrayList<NotificationInfo> notificationList = new ArrayList<>();
 
-        do{
-            NotificationInfo notification = new NotificationInfo();
-            notification.setId(Integer.parseInt(c.getString(0)));
-            notification.setPackageName(c.getString(1));
-            notification.setTitle(c.getString(2));
-            notification.setText(c.getString(3));
-            notificationList.add(notification);
-        }while (c.moveToPrevious());
+        if(c.getCount() != 0){
+            do{
+                NotificationInfo notification = new NotificationInfo();
+                notification.setId(Integer.parseInt(c.getString(0)));
+                notification.setPackageName(c.getString(1));
+                notification.setTitle(c.getString(2));
+                notification.setText(c.getString(3));
+                notificationList.add(notification);
+            }while (c.moveToPrevious());
+        }
 
         MainActivity mainActivityContext = (MainActivity) MainApplication.getMainActivityContext();
         mainActivityContext.setNotificationList(notificationList);

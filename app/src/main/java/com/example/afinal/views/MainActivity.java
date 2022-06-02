@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -55,9 +56,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                     ).show();
         }
-
-
-
 
         notificationView = (RecyclerView) findViewById(R.id.recyclerView);
         notificationView.setLayoutManager(new LinearLayoutManager(this));
@@ -116,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
         return packageNames.contains(context.getPackageName());
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void deleteNotification(NotificationInfo notificationInfo){
         notificationList.remove(notificationInfo);
         notificationAdapter.notifyDataSetChanged();
