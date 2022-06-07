@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                     })
                     .setPositiveButton("前往", (dialog, which) -> {
-                        // 跳轉自開啟權限畫面，權限開啟後通知欄擷取服務將自動啟動。
-                        startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
-                    }
+                                // 跳轉自開啟權限畫面，權限開啟後通知欄擷取服務將自動啟動。
+                                startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
+                            }
                     ).show();
         }
 
@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(notificationView);
         notificationAdapter = new NotificationAdapter(this, notificationList);
         notificationView.setAdapter(notificationAdapter);
-      }
     }
 
     @Override
