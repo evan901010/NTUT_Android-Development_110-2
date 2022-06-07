@@ -22,7 +22,7 @@
         </activity>
 
         <service
-            android:name=".model.NotificationMangerService"
+            android:name=".service.NotificationMangerService"
             android:exported="false"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
@@ -30,5 +30,14 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
+        <receiver
+            android:name=".receiver.AlarmBroadcastReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>
