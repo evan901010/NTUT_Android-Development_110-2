@@ -30,7 +30,6 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
-
         <receiver
             android:name=".receiver.AlarmBroadcastReceiver"
             android:enabled="true"

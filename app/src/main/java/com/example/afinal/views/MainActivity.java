@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(notificationView);
         notificationAdapter = new NotificationAdapter(this, notificationList);
         notificationView.setAdapter(notificationAdapter);
+      }
     }
 
     @Override

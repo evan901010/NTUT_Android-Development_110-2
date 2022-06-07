@@ -1,8 +1,5 @@
 package com.example.afinal.views;
 
-
-import static androidx.core.content.ContextCompat.getSystemService;
-
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -29,6 +26,7 @@ import com.example.afinal.receiver.AlarmBroadcastReceiver;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+
 
 public class NotificationAdapter extends
         RecyclerView.Adapter<NotificationAdapter.WordViewHolder> implements ItemTouchHelperAdapter{
@@ -190,5 +188,31 @@ public class NotificationAdapter extends
                     ("Notifies every 15 minutes to stand up and walk");
             mNotificationManager.createNotificationChannel(notificationChannel);
         }
+            this.mAdapter = adapter;
+        }
+    }
+
+    public NotificationAdapter(Context context, ArrayList<ArrayList<String>> notificationList) {
+        mInflater = LayoutInflater.from(context);
+        this.notificationList = notificationList;
+    }
+
+    @NonNull
+    @Override
+    public NotificationAdapter.WordViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View mItemView = mInflater.inflate(
+                R.layout.notification_row, parent, false);
+        return new WordViewHolder(mItemView, this);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull NotificationAdapter.WordViewHolder holder, int position) {
+        holder.titleView.setText(notificationList.get(position).get(1));
+        holder.textView.setText(notificationList.get(position).get(2));
+    }
+
+    @Override
+    public int getItemCount() {
+        return notificationList.size();
     }
 }
