@@ -38,7 +38,8 @@ public class DataModel extends SQLiteOpenHelper {
         String title = extras.getString(Notification.EXTRA_TITLE);
         String text = extras.getString(Notification.EXTRA_TEXT);
         long timestamp = sbn.getPostTime();
-        insertNotification(packageName, title, text, timestamp);
+        if(!packageName.equals("com.example.afinal")) insertNotification(packageName, title, text, timestamp);
+
     }
 
     public void insertNotification(String packageName, String title, String text, long timestamp){
